@@ -210,7 +210,7 @@ For this reason, chunking is strongly discouraged when you intend to leverage ba
 
 It's also important to understand that iOS will automatically wait for your user to have a network connection before attempting to start your upload. This means your uploads might take a while to start. If a network connection drops _while_ an upload is in progress, iOS will attempt to re-upload your file automatically.
 
-By default, iOS will retry the full upload instead of resuming where the upload has left off. Unfortunately we haven't found a way to prevent iOS from doing this. On iOS 17 Apple has adde support for resumable uploads. We're currently exploring how we can integrate TUSKit with this feature since both iOS and TUSKit rely on the same protocols.
+By default, iOS will retry the full upload instead of resuming where the upload has left off. Unfortunately we haven't found a way to prevent iOS from doing this. On iOS 17 Apple has added support for resumable uploads. We're currently exploring how we can integrate TUSKit with this feature since both iOS and TUSKit rely on the same protocols.
 
 ### Warning: information below is deprecated in TUSKit 3.2.0.
 Available from iOS13, you can schedule uploads to be performed in the background using the `scheduleBackgroundTasks()` method on `TUSClient`. 
