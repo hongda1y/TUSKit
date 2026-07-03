@@ -800,7 +800,15 @@ extension TUSClient: SchedulerDelegate {
         
         let canRetry = metaData.errorCount <= retryCount
         if canRetry {
-            scheduler.addTask(task: task)
+            // ponytail: on UploadDataTask failure, resync offset via HEAD before next PATCH.
+            // URLSession may restart the request body on transient drops; the server's real offset is authoritative.
+            let retryTask: ScheduledTask
+            if task is UploadDataTask, let remoteDestination = metaData.remoteDestination {
+                retryTask = StatusTask(api: api, remoteDestination: remoteDestination, metaData: metaData, files: files, chunkSize: chunkSize, headerGenerator: headerGenerator)
+            } else {
+                retryTask = task
+            }
+            scheduler.addTask(task: retryTask)
         } else { // Exhausted all retries, reporting back as failure.
             queue.sync {
                 self.uploads[metaData.id] = nil
